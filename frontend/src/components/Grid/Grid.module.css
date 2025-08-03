@@ -1,0 +1,14 @@
+.gridContainer {
+    border: 5px solid black;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.pixel {
+    width: 100%;
+    text-align: center;
+}
