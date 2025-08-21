@@ -1,29 +1,26 @@
-import { useState, createContext } from 'react';
+import { useState} from 'react';
+import { useCookies } from 'react-cookie';
 
-export const sizeContext = createContext();
-
-import NoGrid from './components/NoGrid/NoGrid';
+import NoGrid from './components/Grid/NoGrid';
 import Grid from './components/Grid/Grid';
-import Sidebar from './components/Sidebar/SIdebar';
+import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
-  const [height, setHeight] = useState(null);
-  const [width, setWidth] = useState(null);
+  const [cookies] = useCookies(['grid']);
+  console.log(cookies)
 
   return (
     <>
-      <sizeContext.Provider value={{ height, width, setHeight, setWidth }}>
-        <div className="home-page">
-          {height && width ? (
-            <>
-              <Grid height={height} width={width} />
-              <Sidebar />
-            </>
-          ) : (
-            <NoGrid />
-          )}
-        </div>
-      </sizeContext.Provider>
+      <div className="home-page">
+        {cookies.grid ? (
+          <>
+            <Grid />
+            <Sidebar />
+          </>
+        ) : (
+          <NoGrid />
+        )}
+      </div>
     </>
   )
 }

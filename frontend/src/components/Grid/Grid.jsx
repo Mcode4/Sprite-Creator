@@ -1,18 +1,19 @@
 import { useState, useRef } from "react"
+import { useCookies } from 'react-cookie'
 import styles from './Grid.module.css'
 
-function Grid({ height, width }) {
-    const gridRef = useRef(Array.from({length: height}, ()=> Array(width).fill('rgba(25, 0, 255, 0)')));
-    console.log(gridRef.current)
-
+function Grid() {
+    const [cookies, setCookie, removeCookie] = useCookies(['grid']);
+    const [grid, setGrid] = useState(cookies.grid); 
     return (
         <div className={styles.gridContainer}>
-            {gridRef.current.map((row, x)=> 
-                <div className={styles.row}>
+            {grid.map((row, y)=> 
+                <div className={styles.row} key={y}>
                 {row.map((colColor, x)=> (
                     <div 
                         className={styles.pixel}
-                        style={{backgroundColor: `${colColor}`}}
+                        key={x}
+                        style={{ backgroundColor: colColor }}
                     >{colColor}</div>
                 ))}
                 <br />
@@ -21,5 +22,25 @@ function Grid({ height, width }) {
         </div>
     )
 }
+
+// const gridRef = useRef(Array.from({length: height}, ()=> Array(width).fill('rgba(25, 0, 255, 0)')));
+//     console.log(gridRef.current)
+
+//     return (
+        // <div className={styles.gridContainer}>
+        //     {grid.current.map((row, y)=> 
+        //         <div className={styles.row} key={y}>
+        //         {row.map((colColor, x)=> (
+        //             <div 
+        //                 className={styles.pixel}
+        //                 key={x}
+        //                 style={{ backgroundColor: colColor }}
+        //             >{colColor}</div>
+        //         ))}
+        //         <br />
+        //         </div>
+        //     )}
+        // </div>
+//     )
 
 export default Grid

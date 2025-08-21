@@ -1,8 +1,8 @@
-import { useContext, useState, useRef} from "react"
-import { sizeContext } from "../../App"
+import { useState, useRef} from "react";
+import { useCookies } from "react-cookie";
 
 function NoGrid() {
-    const { setHeight, setWidth} = useContext(sizeContext);
+    const [cookies, setCookie, removeCookie] = useCookies(['grid']);
     const [err, setErr] = useState({});
     const height = useRef();
     const width = useRef();
@@ -12,8 +12,9 @@ function NoGrid() {
         const widthValue = Number(width.current.value || 0);
 
         if(heightValue > 1 && widthValue > 1) {
-            setHeight(heightValue);
-            setWidth(widthValue);
+            const grid = Array.from({length: heightValue}, ()=> Array(widthValue).fill('rgba(25, 0, 255, 0)'))
+            setCookie('grid', grid, {maxAge: 14400});
+            console.log('COOKIES REACT', cookies)
         } else {
             setErr({});
             if(!widthValue || widthValue < 1) {
@@ -25,10 +26,6 @@ function NoGrid() {
                 height.current.focus();
             }
         }
-
-
-        
-        console.log("height: ", Number(height.current.value), "width: ", width.value)
     }
 
     return (
