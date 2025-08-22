@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Sidebar.module.css';
 import paintBrushIcon from '../../../assets/paintbrush-solid-full.svg';
 import eraserIcon from '../../../assets/eraser-solid-full.svg';
 
-function Sidebar({ color, setColor }) {
+function Sidebar({ color, setColor, setEraser }) {
     const [active, setActive] = useState('pixelbrush');
     // pixelBrush (color)
     // eraser
+    useEffect(()=> {
+        handleActiveChange(active);
+    }, []);
+    useEffect(()=> {
+        if(active === 'eraser') {
+            setEraser(true);
+        } else {
+            setEraser(false);
+        }
+    }, [active])
 
     function handleColorChange(e) {
         setColor(e.target.value);
@@ -30,7 +40,7 @@ function Sidebar({ color, setColor }) {
         <div className={styles.sidebar}>
             <div className={styles.iconContainer} id='pixelbrush' onClick={()=> handleActiveChange('pixelbrush')}>
                 <img src={paintBrushIcon} alt="Paintbrush" className={styles.icon} />
-                <input type="color" id="pixelBrush" onChange={(e)=> handleColorChange(e)} />
+                <input type="color" id="pixelBrush" onChange={(e)=> handleColorChange(e)} value={color} />
             </div>
             <div className={styles.iconContainer} id='eraser' onClick={()=> handleActiveChange('eraser')}>
                 <img src={eraserIcon} alt="Eraser" className={styles.icon} />
