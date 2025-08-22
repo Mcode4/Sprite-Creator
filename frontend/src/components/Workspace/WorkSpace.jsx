@@ -8,15 +8,18 @@ function WorkSpace() {
     const [cookies, setCookie] = useCookies(['color']);
     const [color, setColor] = useState(cookies.color ? cookies.color : 'rgb(0,0,0)');
     const [eraser, setEraser] = useState(false);
+    const [eyeDropper, setEyeDropper] = useState(false);
 
     useEffect(()=> {
         setCookie('color', color, {maxAge: 14400});
     }, [color]);
 
+    console.log('EYEDROPPER', eyeDropper)
+
     return (
         <div className={styles.workspace} >
-            <Grid color={color} eraser={eraser} />
-            <Sidebar color={color} setColor={setColor} setEraser={setEraser} />
+            <Grid color={color} setColor={setColor} eraser={eraser} eyeDropper={eyeDropper} />
+            <Sidebar color={color} setColor={setColor} setEraser={setEraser} setEyeDropper={setEyeDropper} />
         </div>
     )
 }

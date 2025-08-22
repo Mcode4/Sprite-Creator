@@ -1,5 +1,6 @@
 .sidebar {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: center;
     gap: 50px;
     padding: 10px;

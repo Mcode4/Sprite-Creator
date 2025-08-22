@@ -3,19 +3,28 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './Sidebar.module.css';
 import paintBrushIcon from '../../../assets/paintbrush-solid-full.svg';
 import eraserIcon from '../../../assets/eraser-solid-full.svg';
+import eyeDropperIcon from '../../../assets/eye-dropper-solid-full.svg';
 
-function Sidebar({ color, setColor, setEraser }) {
+function Sidebar({ color, setColor, setEraser, setEyeDropper }) {
     const [active, setActive] = useState('pixelbrush');
     // pixelBrush (color)
     // eraser
     useEffect(()=> {
         handleActiveChange(active);
     }, []);
+
     useEffect(()=> {
+        console.log('ACTIVE CHANGE:', active)
         if(active === 'eraser') {
             setEraser(true);
+            setEyeDropper(false);
+        } else if(active === 'eyedropper') {
+            console.log('EYEDROPPER RAN')
+            setEyeDropper(true);
+            setEraser(false);
         } else {
             setEraser(false);
+            setEyeDropper(false);
         }
     }, [active])
 
@@ -44,6 +53,9 @@ function Sidebar({ color, setColor, setEraser }) {
             </div>
             <div className={styles.iconContainer} id='eraser' onClick={()=> handleActiveChange('eraser')}>
                 <img src={eraserIcon} alt="Eraser" className={styles.icon} />
+            </div>
+            <div className={styles.iconContainer} id='eyedropper' onClick={()=> handleActiveChange('eyedropper')}>
+                <img src={eyeDropperIcon} alt="EyeDropper" className={styles.icon} />
             </div>
         </div>
     )

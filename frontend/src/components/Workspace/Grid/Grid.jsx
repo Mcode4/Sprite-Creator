@@ -2,20 +2,25 @@ import { useState } from "react"
 import { useCookies } from 'react-cookie'
 import styles from './Grid.module.css'
 
-function Grid({ color, eraser }) {
+function Grid({ color, setColor, eraser, eyeDropper }) {
     const [cookies, setCookie, removeCookie] = useCookies(['grid']);
     const [grid, setGrid] = useState(cookies.grid); 
 
     // function to handle grid changing color
-    function setColor(x, y) {
+    function handleGridChange(x, y) {
         console.log("GRID", x, y, color);
         const newGrid = grid;
+        console.log(`EYEDROPPER: ${eyeDropper}, ERASER: ${eraser}`)
         
         if(eraser) {
             newGrid[y][x] = 'rgba(25, 0, 255, 0)';
             setGrid(newGrid);
             setCookie('grid', grid, {maxAge: 14400});
             console.log('COOKIES', cookies.grid);
+        } else if(eyeDropper) {
+            const pixelColor = grid[y][x];
+            setColor(pixelColor);
+            console.log('RAN, PIXEL COLOR: ', pixelColor)
         } else {
             newGrid[y][x] = color;
             setGrid(newGrid);
@@ -33,7 +38,7 @@ function Grid({ color, eraser }) {
                         className={styles.pixel}
                         key={x}
                         style={{ backgroundColor: colColor }}
-                        onClick={()=> setColor(x, y)}
+                        onClick={()=> handleGridChange(x, y)}
                     >{colColor}</div>
                 ))}
                 <br />
