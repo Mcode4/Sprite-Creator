@@ -2,9 +2,20 @@ import { useState, useRef } from "react"
 import { useCookies } from 'react-cookie'
 import styles from './Grid.module.css'
 
-function Grid() {
+function Grid({ color }) {
     const [cookies, setCookie, removeCookie] = useCookies(['grid']);
     const [grid, setGrid] = useState(cookies.grid); 
+
+    // function to handle grid changing color
+    function setColor(x, y) {
+        console.log("GRID", x, y, color)
+        const newGrid = grid
+        newGrid[y][x] = color
+        setGrid(newGrid)
+        setCookie('grid', grid, {maxAge: 14400})
+        console.log('COOKIES', cookies.grid)
+    }
+
     return (
         <div className={styles.gridContainer}>
             {grid.map((row, y)=> 
@@ -14,6 +25,7 @@ function Grid() {
                         className={styles.pixel}
                         key={x}
                         style={{ backgroundColor: colColor }}
+                        onClick={()=> setColor(x, y)}
                     >{colColor}</div>
                 ))}
                 <br />

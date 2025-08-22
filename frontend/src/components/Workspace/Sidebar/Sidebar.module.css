@@ -1,0 +1,25 @@
+.sidebar {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 10px;
+}
+
+.iconContainer {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    height: 75px;
+    width: 50px;
+    padding: 15px;
+}
+
+.icon {
+    height: 50px;
+    width: 50px;
+}
+
+#paintbrush {
+    height: 40px;
+    margin-bottom: 0;
+}
