@@ -4,8 +4,9 @@ import styles from './Sidebar.module.css';
 import paintBrushIcon from '../../../assets/paintbrush-solid-full.svg';
 import eraserIcon from '../../../assets/eraser-solid-full.svg';
 import eyeDropperIcon from '../../../assets/eye-dropper-solid-full.svg';
+import fillBucketIcon from '../../../assets/fill-drip-solid-full.svg';
 
-function Sidebar({ color, setColor, setEraser, setEyeDropper }) {
+function Sidebar({ color, setColor, setEraser, setEyeDropper, setFillBucket }) {
     const [active, setActive] = useState('pixelbrush');
     // pixelBrush (color)
     // eraser
@@ -15,16 +16,18 @@ function Sidebar({ color, setColor, setEraser, setEyeDropper }) {
 
     useEffect(()=> {
         console.log('ACTIVE CHANGE:', active)
+        setEraser(false);
+        setEyeDropper(false);
+        setFillBucket(false);
+
         if(active === 'eraser') {
             setEraser(true);
-            setEyeDropper(false);
-        } else if(active === 'eyedropper') {
-            console.log('EYEDROPPER RAN')
+        } 
+        if(active === 'eyedropper') {
             setEyeDropper(true);
-            setEraser(false);
-        } else {
-            setEraser(false);
-            setEyeDropper(false);
+        }
+        if(active === 'fillbucket') {
+            setFillBucket(true);
         }
     }, [active])
 
@@ -48,14 +51,17 @@ function Sidebar({ color, setColor, setEraser, setEyeDropper }) {
     return (
         <div className={styles.sidebar}>
             <div className={styles.iconContainer} id='pixelbrush' onClick={()=> handleActiveChange('pixelbrush')}>
-                <img src={paintBrushIcon} alt="Paintbrush" className={styles.icon} />
+                <img src={paintBrushIcon} alt="Paint Brush" className={styles.icon} />
                 <input type="color" id="pixelBrush" onChange={(e)=> handleColorChange(e)} value={color} />
             </div>
             <div className={styles.iconContainer} id='eraser' onClick={()=> handleActiveChange('eraser')}>
                 <img src={eraserIcon} alt="Eraser" className={styles.icon} />
             </div>
             <div className={styles.iconContainer} id='eyedropper' onClick={()=> handleActiveChange('eyedropper')}>
-                <img src={eyeDropperIcon} alt="EyeDropper" className={styles.icon} />
+                <img src={eyeDropperIcon} alt="Eye Dropper" className={styles.icon} />
+            </div>
+            <div className={styles.iconContainer} id='fillbucket' onClick={()=> handleActiveChange('fillbucket')}>
+                <img src={fillBucketIcon} alt="Fill Bucket" className={styles.icon} />
             </div>
         </div>
     )
