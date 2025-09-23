@@ -1,10 +1,13 @@
-import { useState } from "react"
+import { useEffect } from "react"
 import { useCookies } from 'react-cookie'
 import styles from './Grid.module.css'
 
-function Grid({ color, setColor, eraser, eyeDropper, fillBucket }) {
+function Grid({ grid, setGrid, color, setColor, eraser, eyeDropper, fillBucket, gridHistory, setGridHistory, rewriteGrid }) {
     const [cookies, setCookie, removeCookie] = useCookies(['grid']);
-    const [grid, setGrid] = useState(cookies.grid); 
+    
+    useEffect(()=> {
+        console.log('GRID CHANGED')
+    }, [grid])
 
     // function to handle grid changing color
     function handleGridChange(x, y) {
@@ -23,7 +26,6 @@ function Grid({ color, setColor, eraser, eyeDropper, fillBucket }) {
         else if(fillBucket) {
             // console.log('Current', x, y);
             const space = [[y, x]];
-
             while(space.length) {
                 let [row, col] = space.shift();
                 
@@ -32,19 +34,15 @@ function Grid({ color, setColor, eraser, eyeDropper, fillBucket }) {
                 newGrid[row][col] = color;
 
                 if(row > 0 && newGrid[row-1][col] !== color) {
-                    console.log('UP RAN', [row-1, col])
                     space.push([row-1, col]);
                 }
                 if(row < newGrid.length - 1 && newGrid[row+1][col] !== color) {
-                    console.log('DOWN RAN', [row+1, col[1]])
                     space.push([row+1, col]);
                 }
                 if(col > 0 && newGrid[row][col-1] !== color) {
-                    console.log('LEFT RAN', [row, col-1])
                     space.push([row, col-1]);
                 }
                 if(col < newGrid[0].length - 1 && newGrid[row][col+1] !== color) {
-                    console.log('RIGHT RAN', [row, col+1])
                     space.push([row, col+1]);
                 }
             }
@@ -57,6 +55,15 @@ function Grid({ color, setColor, eraser, eyeDropper, fillBucket }) {
             setCookie('grid', grid, {maxAge: 14400});
             console.log('COOKIES', cookies.grid);
         }
+        // console.log('GRID HIS B4', gridHistory.current)
+        const gridCopy = JSON.parse(JSON.stringify(newGrid));
+
+        if(rewriteGrid.length > 0) {
+            setGridHistory(rewriteGrid);
+        } else {
+            setGridHistory(g => [ gridCopy, ...g]);
+        }
+        // console.log('GRID HIS AFTER', gridHistory.current)
     }
 
     return (
