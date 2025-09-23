@@ -19,9 +19,12 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, setRewriteGrid
     useEffect(()=> {
         if(active) {
             setGrid(gridHistory[index]);
+            setCookie('grid', gridHistory[index], {maxAge: 14400});
             if(index !== 0) {
                 const rewrite = []
-                for(let i=index; i < gridHistory.length; i++) {
+                console.log(`BEFORE REWRITE INDEX:${index} GRINDLENGTH:${gridHistory.length} - 1`)
+                for(let i = index; i < gridHistory.length; i++) {
+                    console.log('REWRITE PUSHING INDEX:', i, 'GRINDLENGTH:', gridHistory.length, 'CURRENTGRID:', gridHistory[i])
                     rewrite.push(gridHistory[i]);
                 }
                 console.log('REWRITE', rewrite);
@@ -41,7 +44,6 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, setRewriteGrid
         if(index < gridHistory.length - 1) {
             setIndex(i => i + 1);
         }
-        console.log('INDEX AFTER', index)
     }
 
     function handleRedo() {
@@ -56,6 +58,7 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, setRewriteGrid
         const defaultGrid = Array.from({length: grid.length}, ()=> Array(grid[0].length).fill('rgba(25, 0, 255, 0)'));
         setGrid(defaultGrid);
         setCookie('grid', defaultGrid, {maxAge: 14400});
+        setGridHistory(g => [defaultGrid, ...g]);
     }
 
     return (

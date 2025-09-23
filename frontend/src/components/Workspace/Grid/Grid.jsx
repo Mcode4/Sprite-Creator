@@ -59,8 +59,10 @@ function Grid({ grid, setGrid, color, setColor, eraser, eyeDropper, fillBucket, 
         const gridCopy = JSON.parse(JSON.stringify(newGrid));
 
         if(rewriteGrid.length > 0) {
-            setGridHistory(rewriteGrid);
+            console.log("REWRITE HAPPENING GRIDCOPY:", gridCopy, "REWRITE:", rewriteGrid)
+            setGridHistory([gridCopy, ...rewriteGrid]);
         } else {
+            console.log("GRID HISTORY PUSH HAPPENNING GRIDCOPY:", gridCopy, "GRID HISTORY:", gridHistory)
             setGridHistory(g => [ gridCopy, ...g]);
         }
         // console.log('GRID HIS AFTER', gridHistory.current)
