@@ -1,8 +1,8 @@
-import Grid from "./Grid/Grid";
-import Sidebar from "./Sidebar/SIdebar";
-import TopBarMenu from "./TopBarMenu/TopBarMenu";
+import Grid from "../Grid/Grid";
+import Sidebar from '../Sidebar/Sidebar'
+import TopBarMenu from "../TopBarMenu/TopBarMenu";
 import styles from './Workspace.module.css';
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect} from "react";
 import { useCookies } from "react-cookie";
 
 function WorkSpace() {
@@ -14,6 +14,7 @@ function WorkSpace() {
     const [grid, setGrid] = useState(cookies.grid);
     const [rewriteGrid, setRewriteGrid] = useState([]);
     const [gridHistory, setGridHistory] = useState([]);
+    const [index, setIndex] = useState(0);
 
     useEffect(()=> {
         setCookie('color', color, {maxAge: 14400});
@@ -23,9 +24,9 @@ function WorkSpace() {
 
     return (
         <div>
-            <TopBarMenu grid={grid} setGrid={setGrid} gridHistory={gridHistory} setGridHistory={setGridHistory} setRewriteGrid={setRewriteGrid} />            
+            <TopBarMenu grid={grid} setGrid={setGrid} gridHistory={gridHistory} setGridHistory={setGridHistory} rewriteGrid={rewriteGrid} setRewriteGrid={setRewriteGrid} index={index} setIndex={setIndex} />            
             <div className={styles.workspace} >
-                <Grid grid={grid} setGrid={setGrid} color={color} setColor={setColor} eraser={eraser} eyeDropper={eyeDropper} fillBucket={fillBucket} gridHistory={gridHistory} setGridHistory={setGridHistory} rewriteGrid={rewriteGrid} />
+                <Grid grid={grid} setGrid={setGrid} color={color} setColor={setColor} eraser={eraser} eyeDropper={eyeDropper} fillBucket={fillBucket} gridHistory={gridHistory} setGridHistory={setGridHistory} rewriteGrid={rewriteGrid} setIndex={setIndex} />
                 <Sidebar color={color} setColor={setColor} setEraser={setEraser} setEyeDropper={setEyeDropper} setFillBucket={setFillBucket} />
             </div>
         </div>

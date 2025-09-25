@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Sidebar.module.css';
-import paintBrushIcon from '../../../assets/paintbrush-solid-full.svg';
-import eraserIcon from '../../../assets/eraser-solid-full.svg';
-import eyeDropperIcon from '../../../assets/eye-dropper-solid-full.svg';
-import fillBucketIcon from '../../../assets/fill-drip-solid-full.svg';
+import paintBrushIcon from '../../assets/paintbrush-solid-full.svg'
+import eraserIcon from '../../assets/eraser-solid-full.svg';
+import eyeDropperIcon from '../../assets/eye-dropper-solid-full.svg';
+import fillBucketIcon from '../../assets/fill-drip-solid-full.svg';
 
 function Sidebar({ color, setColor, setEraser, setEyeDropper, setFillBucket }) {
     const [active, setActive] = useState('pixelbrush');

@@ -2,7 +2,13 @@ import { useEffect } from "react"
 import { useCookies } from 'react-cookie'
 import styles from './Grid.module.css'
 
-function Grid({ grid, setGrid, color, setColor, eraser, eyeDropper, fillBucket, gridHistory, setGridHistory, rewriteGrid }) {
+function Grid({ 
+    grid, setGrid, 
+    color, setColor, 
+    eraser, eyeDropper, fillBucket, 
+    gridHistory, setGridHistory, 
+    rewriteGrid, setIndex
+}) {
     const [cookies, setCookie, removeCookie] = useCookies(['grid']);
     
     useEffect(()=> {
@@ -14,6 +20,10 @@ function Grid({ grid, setGrid, color, setColor, eraser, eyeDropper, fillBucket, 
         console.log("GRID", x, y, color);
         const newGrid = grid;
         console.log(`EYEDROPPER: ${eyeDropper}, ERASER: ${eraser}`)
+
+        if(grid[y][x] === color) {
+            return
+        }
         
         if(eraser) {
             newGrid[y][x] = 'rgba(25, 0, 255, 0)';
@@ -55,17 +65,17 @@ function Grid({ grid, setGrid, color, setColor, eraser, eyeDropper, fillBucket, 
             setCookie('grid', grid, {maxAge: 14400});
             console.log('COOKIES', cookies.grid);
         }
-        // console.log('GRID HIS B4', gridHistory.current)
         const gridCopy = JSON.parse(JSON.stringify(newGrid));
 
         if(rewriteGrid.length > 0) {
-            console.log("REWRITE HAPPENING GRIDCOPY:", gridCopy, "REWRITE:", rewriteGrid)
-            setGridHistory([gridCopy, ...rewriteGrid]);
+            setIndex(0);
+            const solidGrid = [gridCopy, ...rewriteGrid]
+            console.log("REWRITE HAPPENING GRIDCOPY:", gridCopy, "REWRITE:", rewriteGrid, "SOLID GRID", solidGrid)
+            setGridHistory(solidGrid);
         } else {
             console.log("GRID HISTORY PUSH HAPPENNING GRIDCOPY:", gridCopy, "GRID HISTORY:", gridHistory)
             setGridHistory(g => [ gridCopy, ...g]);
         }
-        // console.log('GRID HIS AFTER', gridHistory.current)
     }
 
     return (
