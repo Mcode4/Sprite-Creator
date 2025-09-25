@@ -1,9 +1,7 @@
 import { useState} from 'react';
 import { useCookies } from 'react-cookie';
 
-import NoGrid from './components/Grid/NoGrid';
-// import Grid from './components/Workspace/Grid/Grid';
-// import Sidebar from './components/Workspace/Sidebar/SIdebar';
+import NoGrid from './components/NoGrid/NoGrid';
 import WorkSpace from './components/Workspace/WorkSpace';
 
 function App() {

@@ -1,5 +1,6 @@
 import { useState, useRef} from "react";
 import { useCookies } from "react-cookie";
+import styles from './NoGrid.module.css'
 
 function NoGrid() {
     const [cookies, setCookie, removeCookie] = useCookies(['grid']);
