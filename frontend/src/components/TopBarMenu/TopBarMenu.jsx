@@ -1,20 +1,56 @@
 import { useEffect, useRef } from "react";
 import { useCookies } from "react-cookie";
 import styles from './TopBarMenu.module.css';
+import * as bootstrap from 'bootstrap';
+import ReactDOM from 'react-dom/client'
 
-export 
-// Undo/Redo not working. When grid changes, the gridHistory length doesn't increase
-// index increases and seems to be correct
 
 function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, rewriteGrid, setRewriteGrid, index, setIndex }) {
     const [cookies, setCookie, removeCookie] = useCookies(['grid']);
     const active = useRef(false);
+    const popoverRef = useRef(null);
 
     useEffect(()=> {
         console.log('GRID COPY PUSHED')
         const gridCopy = JSON.parse(JSON.stringify(grid));
         setGridHistory([gridCopy]);
         setIndex(0);
+
+        if(popoverRef.current) {
+            const pop = new bootstrap.Popover(popoverRef.current, {
+                content: 'placeholder',
+                html: true,
+                trigger: 'focus'
+            });
+
+            const onShow = ()=> {
+                const tip = pop.getTipElement();
+                const body = tip && tip.querySelector('.popover-body');
+                if(!body) return;
+                body.innerHTML = '';
+                root = ReactDOM.createRoot(body);
+                root.render(
+                    <div>
+                        Are you sure your want to make a new grid? 
+                        <a href="#" onClick={handleReturn}>Yes</a>
+                    </div>
+                );
+            }
+
+            const onClose = ()=> {
+                if(root) {
+                    root.unmount();
+                    root = null;
+                }
+            }
+
+            popoverRef.current.addEventListener('show.bs.popover', onShow);
+
+            return () => {
+                popoverRef.current.removeEventListener('show.bs.popover', onClose);
+                pop.dispose();
+            }
+        }
     }, []);
 
     useEffect(()=> {
@@ -59,6 +95,7 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, rewriteGrid, s
     }
 
     function handleClear() {
+        if(index === 0 && rewriteGrid.length === 0) return
         const defaultGrid = Array.from({length: grid.length}, ()=> Array(grid[0].length).fill('rgba(25, 0, 255, 0)'));
         setGrid(defaultGrid);
         setCookie('grid', defaultGrid, {maxAge: 14400});
@@ -72,20 +109,43 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, rewriteGrid, s
         }
     }
 
+    function handleReturn() {
+        removeCookie('grid');
+    }
+
     return (
         <div className={styles.topBar}>
-            <h2>Sprite Creator</h2>
-            <button className={styles.topBarButton} onClick={()=> handleUndo()}
-                style={index < gridHistory.length - 1 ? {color : 'green'} : {color : 'red'}}
+            <button className="btn" 
+                ref={popoverRef}
+                data-bs-container="body" 
+                data-bs-toggle="popover" 
+                data-bs-placement="right"
+                data-bs-content="right div"
             >
-                Undo
+                <h2>Sprite Creator</h2>
             </button>
-            <button className={styles.topBarButton} onClick={()=> handleRedo()}
-                style={index > 0 ? {color : 'green'} : {color : 'red'}}
-            >
-                Redo
-            </button>
-            <button className={styles.topBarButton} onClick={handleClear}>
+            { index < gridHistory.length - 1 ? (
+                    <button className={`${styles.topBarButton} btn btn-primary`} onClick={()=> handleUndo()}>
+                        Undo
+                    </button>
+                ) : (
+                    <button className={`${styles.topBarButton} btn btn-primary`} disabled>
+                        Undo
+                    </button>
+                )
+            }
+
+            { index > 0 ? (
+                <button className={`${styles.topBarButton} btn btn-primary`} onClick={()=> handleRedo()}>
+                    Redo
+                </button>
+            ) : (
+                <button className={`${styles.topBarButton} btn btn-primary`} disabled>
+                    Redo
+                </button>
+            )}
+            
+            <button className={`${styles.topBarButton} btn btn-danger`} onClick={handleClear}>
                 Clear
             </button>
         </div>

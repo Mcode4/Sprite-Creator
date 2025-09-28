@@ -90,7 +90,6 @@ function Grid({
                         onClick={()=> handleGridChange(x, y)}
                     >{colColor}</div>
                 ))}
-                <br />
                 </div>
             )}
         </div>

@@ -12,43 +12,50 @@ function NoGrid() {
         const heightValue = Number(height.current.value || 0);
         const widthValue = Number(width.current.value || 0);
 
-        if(heightValue > 1 && widthValue > 1) {
+        if(10 >= heightValue && heightValue > 1 && 10 >= widthValue && widthValue > 1) {
             const grid = Array.from({length: heightValue}, ()=> Array(widthValue).fill('rgba(25, 0, 255, 0)'))
             setCookie('grid', grid, {maxAge: 14400});
-            console.log('COOKIES REACT', cookies)
         } else {
             setErr({});
-            if(!widthValue || widthValue < 1) {
+            if(!widthValue || widthValue <= 1) {
                 setErr(e => ({...e, width: "Width must be a number greater than 1"}));
                 width.current.focus();
             }
-            if(!heightValue || heightValue < 1) {
+            else if(widthValue > 10){
+                setErr(e => ({...e, width: "Width must be a number less than 10"}));
+                width.current.focus();
+            }
+            if(!heightValue || heightValue <= 1) {
                 setErr(e => ({...e, height: "Height must be a number greater than 1"}));
+                height.current.focus();
+            }
+            else if(heightValue > 10){
+                setErr(e => ({...e, height: "Height must be a number less than 10"}));
                 height.current.focus();
             }
         }
     }
 
     return (
-        <div className={styles.noGridBackground}>
-            <div className={styles.noGridContainer}>
+        <div id={styles.noGridBackground}>
+            
+            <div id={styles.noGridContainer}>
+                <h3>Choose your grid size</h3>
                 <label>Height: <input ref={height} type="number" id="height-input" /></label>
-                <br />
-                {err.height && (
+                {err.height ? (
                     <>
                         <p>{err.height}</p>
                         <br />
                     </>
-                )}
+                ) : <br />}
                 <label>Width: <input ref={width} type="number" id="width-input" /></label>
-                {err.width && (
+                {err.width ? (
                     <>
                         <p>{err.width}</p>
                         <br />
                     </>
-                )}
-                <br />
-                <button onClick={handleSubmit}>Submit</button>
+                ) : <br />}
+                <button className="btn btn-outline-primary" onClick={handleSubmit}>Submit</button>
             </div>
         </div>
     )
