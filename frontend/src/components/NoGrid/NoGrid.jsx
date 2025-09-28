@@ -30,24 +30,26 @@ function NoGrid() {
     }
 
     return (
-        <div className="no-grid-container">
-            <label>Height: <input ref={height} type="number" id="height-input" /></label>
-            <br />
-            {err.height && (
-                <>
-                    <p>{err.height}</p>
-                    <br />
-                </>
-            )}
-            <label>Width: <input ref={width} type="number" id="width-input" /></label>
-            {err.width && (
-                <>
-                    <p>{err.width}</p>
-                    <br />
-                </>
-            )}
-            <br />
-            <button onClick={handleSubmit}>Submit</button>
+        <div className={styles.noGridBackground}>
+            <div className={styles.noGridContainer}>
+                <label>Height: <input ref={height} type="number" id="height-input" /></label>
+                <br />
+                {err.height && (
+                    <>
+                        <p>{err.height}</p>
+                        <br />
+                    </>
+                )}
+                <label>Width: <input ref={width} type="number" id="width-input" /></label>
+                {err.width && (
+                    <>
+                        <p>{err.width}</p>
+                        <br />
+                    </>
+                )}
+                <br />
+                <button onClick={handleSubmit}>Submit</button>
+            </div>
         </div>
     )
 }
