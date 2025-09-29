@@ -18,36 +18,49 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, rewriteGrid, s
 
         if(popoverRef.current) {
             const pop = new bootstrap.Popover(popoverRef.current, {
-                content: 'placeholder',
+                content: ' ',
                 html: true,
                 trigger: 'focus'
             });
 
-            const onShow = ()=> {
-                const tip = pop.getTipElement();
-                const body = tip && tip.querySelector('.popover-body');
+            const onShown = ()=> {
+                const popoverElement = document.querySelector('.popover');
+                const body = popoverElement?.querySelector('.popover-body');
+                console.log(`POPOVER EL: ${popoverElement} BODY: ${body}`)
                 if(!body) return;
                 body.innerHTML = '';
-                root = ReactDOM.createRoot(body);
+                
+                var root = ReactDOM.createRoot(body);
                 root.render(
                     <div>
-                        Are you sure your want to make a new grid? 
-                        <a href="#" onClick={handleReturn}>Yes</a>
+                        Are you sure your want to make a new grid?{' '}
+                        <a href="#" onClick={(e)=> {
+                            e.preventDefault();
+                            handleReturn();
+                            pop.hide();
+                            }}
+                        >
+                            Yes
+                        </a>
                     </div>
                 );
             }
 
-            const onClose = ()=> {
+            const onHidden = ()=> {
                 if(root) {
                     root.unmount();
                     root = null;
                 }
             }
 
-            popoverRef.current.addEventListener('show.bs.popover', onShow);
+            popoverRef.current.addEventListener('shown.bs.popover', onShown);
+            popoverRef.current.addEventListener('hidden.bs.popover', onHidden);
 
             return () => {
-                popoverRef.current.removeEventListener('show.bs.popover', onClose);
+                if (popoverRef.current) {
+                    popoverRef.current.removeEventListener('shown.bs.popover', onShown);
+                    popoverRef.current.removeEventListener('hidden.bs.popover', onHidden);
+                }
                 pop.dispose();
             }
         }
@@ -95,7 +108,7 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, rewriteGrid, s
     }
 
     function handleClear() {
-        if(index === 0 && rewriteGrid.length === 0) return
+        if(gridHistory.length === 0) return
         const defaultGrid = Array.from({length: grid.length}, ()=> Array(grid[0].length).fill('rgba(25, 0, 255, 0)'));
         setGrid(defaultGrid);
         setCookie('grid', defaultGrid, {maxAge: 14400});
@@ -145,7 +158,7 @@ function TopBarMenu({ grid, setGrid, gridHistory, setGridHistory, rewriteGrid, s
                 </button>
             )}
             
-            <button className={`${styles.topBarButton} btn btn-danger`} onClick={handleClear}>
+            <button className={`${styles.topBarButton} btn btn-danger`} onClick={()=> handleClear()}>
                 Clear
             </button>
         </div>

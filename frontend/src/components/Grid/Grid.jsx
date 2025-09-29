@@ -88,7 +88,7 @@ function Grid({
                         key={x}
                         style={{ backgroundColor: colColor }}
                         onClick={()=> handleGridChange(x, y)}
-                    >{colColor}</div>
+                    ></div>
                 ))}
                 </div>
             )}
