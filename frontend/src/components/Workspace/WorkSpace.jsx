@@ -23,9 +23,9 @@ function WorkSpace() {
     console.log('EYEDROPPER', eyeDropper)
 
     return (
-        <div>
+        <div id={styles.creatorPage}>
             <TopBarMenu grid={grid} setGrid={setGrid} gridHistory={gridHistory} setGridHistory={setGridHistory} rewriteGrid={rewriteGrid} setRewriteGrid={setRewriteGrid} index={index} setIndex={setIndex} />            
-            <div className={styles.workspace} >
+            <div id={styles.workspace} >
                 <Grid grid={grid} setGrid={setGrid} color={color} setColor={setColor} eraser={eraser} eyeDropper={eyeDropper} fillBucket={fillBucket} gridHistory={gridHistory} setGridHistory={setGridHistory} rewriteGrid={rewriteGrid} setIndex={setIndex} />
                 <Sidebar color={color} setColor={setColor} setEraser={setEraser} setEyeDropper={setEyeDropper} setFillBucket={setFillBucket} />
             </div>

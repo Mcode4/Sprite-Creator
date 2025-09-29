@@ -1,5 +1,15 @@
-.workspace {
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    padding: 10px;
+#creatorPage {
+    height: 100vh;
+    width: 100vw;
 }
+
+#workspace {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+

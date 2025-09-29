@@ -1,1 +1,0 @@
-const grid = document.getElementById
